@@ -16,10 +16,11 @@ export class Brandaan extends PIXI.AnimatedSprite {
         this.frames = textures
         this._pixi = pixi
 
-        this.x = x
-        this.y = y
         this.anchor.set(0.5)
-        this.scale.set(3)
+        this.x = game._pixi.screen.width/2
+        this.y = game._pixi.screen.height/2
+        this.anchor.set(0.5)
+        this.scale.set(1)
         this.animationSpeed = 0.1;
         this.loop = true
         this.play();
@@ -35,24 +36,24 @@ export class Brandaan extends PIXI.AnimatedSprite {
         switch (e.key.toUpperCase()) {
             case "A":
             case "ARROWLEFT":
-                this.xSpeed = -3
-                this.scale.set(-3,3)
+                this.xSpeed = -1
+                this.scale.set(-2,2)
                 this.setFrames(1)
                 break
             case "D":
             case "ARROWRIGHT":
-                this.xSpeed = 3
-                this.scale.set(3)
+                this.xSpeed = 1
+                this.scale.set(2)
                 this.setFrames(1)
                 break
             case "W":
             case "ARROWUP":
-                this.ySpeed = -3
+                this.ySpeed = -1
                 this.setFrames(1)
                 break
             case "S":
             case "ARROWDOWN":
-                this.ySpeed = 3
+                this.ySpeed = 1
                 this.setFrames(1)
                 break
         }
@@ -93,5 +94,24 @@ export class Brandaan extends PIXI.AnimatedSprite {
         super.update(delta)
         this.x += this.xSpeed * delta
         this.y += this.ySpeed * delta
+
+        let mapwidth = window.innerWidth
+        let mapheight = window.innerHeight
+        let centerx = 800 /4
+        let centery = 600 / 4
+
+        // // beweeg het karakter over de map maar niet buiten beeld
+        this.x = this.clamp(this.x + this.xSpeed, 0, mapwidth)
+        this.y = this.clamp(this.y + this.ySpeed, 0, mapheight)
+
+        // // centreer het hele level onder het karakter, gebruik clamp om bij de randen niet te scrollen
+        let mapx = this.clamp(this.x, centerx, mapwidth - centerx)
+        let mapy = this.clamp(this.y, centery, mapheight - centery)
+        
+        this.game._pixi.stage.pivot.set(mapx, mapy) 
+    }
+
+    clamp(num: number, min: number, max: number) {
+        return Math.min(Math.max(num, min), max)
     }
 }

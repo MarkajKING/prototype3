@@ -1,12 +1,10 @@
 import * as PIXI from 'pixi.js'
 import coverImage from './images/cover.png'
+import background from './images/map.png'
 import { Assets } from './assets'
 import { Brandaan } from './brandaan'
 
 export class Game {
-    private pixiWidth = 800
-    private pixiHeight = 500
-    
     public _pixi: PIXI.Application
     private loader: PIXI.Loader
     private brandaan: Brandaan
@@ -17,23 +15,26 @@ export class Game {
 
         this.loader = new PIXI.Loader();
         this.loader.add('coverTexture', coverImage)
-        this.loader.load(()=>this.spriteLoadCompleted());
+        this.loader.add('backgroundTexture', background)
+        this.loader.load(() => this.spriteLoadCompleted());
     }
 
     public loadCompleted() {
         //create brandaan mn niffouw
         let frames: PIXI.Texture[][] = this.createBrandaanFrames()
         this.brandaan = new Brandaan(this, frames, 50, 50, this._pixi)
+
+        this._pixi.stage.x = this._pixi.screen.width / 2;
+        this._pixi.stage.y = this._pixi.screen.height / 2;
         //let brandaan move
         this._pixi.ticker.add((delta: number) => this.update(delta))
-
     }
 
     public spriteLoadCompleted() {
         //create background
-        let cover = new PIXI.Sprite(this.loader.resources["coverTexture"].texture!);
-        cover.height = this.pixiHeight;
-        cover.width = this.pixiWidth;
+        let cover = new PIXI.Sprite(this.loader.resources["backgroundTexture"].texture!);
+        cover.width = this._pixi.screen.width;
+        cover.height = this._pixi.screen.height;
         this._pixi.stage.addChild(cover);
     }
 

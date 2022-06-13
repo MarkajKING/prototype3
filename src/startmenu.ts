@@ -3,8 +3,6 @@ import { Button } from './button'
 import { Game } from './game'
 
 export class Startmenu {
-    private pixiWidth = 800
-    private pixiHeight = 500
     private button: Button
     
     private _pixi: PIXI.Application
@@ -12,7 +10,7 @@ export class Startmenu {
     constructor() {
         console.log("startmenu")
 
-        this._pixi = new PIXI.Application({ width: this.pixiWidth, height: this.pixiHeight, backgroundColor: 0x00FF00 });
+        this._pixi = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight, backgroundColor: 0x00FF00 });
         document.body.appendChild(this._pixi.view)
 
         this.button = new Button(
