@@ -20,7 +20,7 @@ export class Brandaan extends PIXI.AnimatedSprite {
         this.x = game._pixi.screen.width/2
         this.y = game._pixi.screen.height/2
         this.anchor.set(0.5)
-        this.scale.set(1)
+        this.scale.set(2)
         this.animationSpeed = 0.1;
         this.loop = true
         this.play();
